@@ -2,11 +2,12 @@ CXX = g++
 DOX = doxygen
 
 EXE := ./bin/hw1
+BIN_DIR := ./bin
 SRC_DIR := ./src
 OBJ_DIR := ./obj
 INC_DIR := ./inc
 DOX_CONF := ./documentation-config.doxygen
-DOX_DIR := ./doc/hw1
+DOX_DIR := ./doc
 
 SRC := $(wildcard $(SRC_DIR)/*.cpp)
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
@@ -19,7 +20,7 @@ LDLIBS   := -lm -lgtest -pthread
 
 all: $(EXE)
 
-$(EXE): $(OBJ)
+$(EXE): $(OBJ) | $(BIN_DIR)
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
@@ -28,9 +29,16 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 $(OBJ_DIR):
 	mkdir $@
 
-clean:
-	$(RM) $(OBJ) $(EXE) -r $(DOX_DIR)
+$(BIN_DIR):
+	mkdir $@
 
-docs:
+$(DOX_DIR):
+	mkdir -p $@
+
+clean:
+	$(RM) -r $(OBJ_DIR) $(BIN_DIR) $(DOX_DIR)
+
+docs: $(DOX_DIR)
 	$(DOX) $(DOX_CONF)
+
 
