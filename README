@@ -53,4 +53,4 @@ The executable can be run with this command:
 This executable also runs the test cases along with the main program.
 
 Finally, the results of doxygen can be located by opening this file with a 
-browser: ./doc/hw1/html/index.html
+browser: ./doc/html/index.html
