@@ -1,0 +1,56 @@
+This code was tested on Ubuntu 16.04.
+To run the code, you need to first install gtest.
+Run the following command on the command line:
+
+
+sudo apt-get install googletest
+
+
+Then compile googletest's static libraries and place them in the right location.
+This can be done with these commands:
+
+
+cd /usr/src/gtest
+sudo cmake CMakeLists.txt
+sudo make
+sudo cp *.a /usr/lib
+sudo mkdir /usr/local/lib/googletest
+sudo ln -s /usr/lib/libgtest.a /usr/local/lib/googletest/libgtest.a
+sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/googletest/libgtest_main.a
+
+
+*it is important to note that /usr/src/gtest/ may be titled /usr/src/googletest 
+so it is important to try both directories
+
+Once you have googletest installed, it is time to install doxygen.
+This can be done with the following command:
+
+
+sudo apt-get install doxygen
+
+
+* you may also need graphiz installed. I didn't but a friend did on Ubuntu 18.04
+This can be installed with this command:
+
+
+sudo apt-get install graphviz
+
+
+Now that these two components are installed it's time to run my code.
+Simply type this on the commandline in the provided directory:
+
+
+make 
+make docs
+
+
+The executable can be run with this command:
+
+
+./bin/hw1 
+
+
+This executable also runs the test cases along with the main program.
+
+Finally, the results of doxygen can be located by opening this file with a 
+browser: ./doc/hw1/html/index.html

@@ -1,0 +1,59 @@
+Assignment 1:
+
+a.
+The problem I chose was the Reader Writer Problems. This problem deals with the
+issue of simultaneous reading and writing. In the common case, we want all 
+reader threads to be able to read the shared resource simultaneously, but
+when a writer writes, none of the readers should be reading or writing.
+It gets more interesting when you add priority. With reader priority, threads
+that are reading should get preferencial treatment in access to the critical
+zone than writer threads. writer priority is the exact opposite.
+
+b.
+1.
+The synchronization is issue is that we have multiple read and writes to
+a shared resources. It's bad because somebody can be reading while another
+is writing and then depending on the order, may read the wrong or an outdated
+value.
+
+5. 
+My solution relied on a series of semaphores around the shared data. The
+writer locks and allows no other thread to access it while it writes.
+The reader simply accesses simultaneously. For priority, more semaphores
+are used. Depending on who has prioirty, locks are put in place
+to block either reader threads or writer threads.
+
+7.
+My test cases come in two parts. They text the access rights of readers
+and writers, and test the priority rights. The access rights tests are labeled
+'AccessTest' in ./src/test.cpp. These test show that writers block when they
+write and readers can access simultaneously. This is done by first collecting
+the timestamps and thread types of each thread. They are then sorted in the 
+run_rw_problem() function based on ascending time. In the test_access_vector() 
+function, the test checks that READER threads had virtually no difference in 
+timestamp when accessing the shared data. It confirms this despite the sleep(1)
+in the reader function. This proves simultaneous access. The test also confirms
+that WRITER threads blocked whenever they accessed the shared data. This was
+verified by the fact that the shared data was always accessed after 1 second
+after write thread wrote to it.
+My priority rights tests are labeled 'PriorityTest' in ./src/test.cpp.
+These tests show that when we have read priority, reader threads block
+writer threads until they are done. They also show that when we have write
+priority, writer threads blocked reader threads until they are done. This
+was done by writing appending the thread type that accessed the shared data
+into a vector called order_vect. If priority was followed then we would 
+see that READERS accessed first and then WRITERS, or the vise versa.
+This was verified in the test_order_vector() function. This function
+returned a string representation of order_vect. It was reprsented as 
+1's and 0's to represent WRITER threads and READER threads respectively.
+This string is then compared to a predicted outcome in ./src/test.cpp.
+If we had 2 READER and 2 WRITER threaders with read_priority. Then we would
+expect the string to look like this '0011'. We can also expect it to look 
+like '1001'. This is because the first created thread usually accesses the
+shared data first, and prioirty kicks in on subsequent threads. So despite
+having read priority, we may have a writer access on the very first access
+and only on the first access. 
+
+Code design was taken from :
+http://jcsites.juniata.edu/faculty/rhodes/os/ch5d.htm
+https://gist.github.com/rajabishek/6209a575f00b122fe490
